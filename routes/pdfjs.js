@@ -16,5 +16,9 @@ router.get('/',(req,res)=>{
     console.log('response on get to - pdfjs  :',__dirname)
     res.sendFile(path.join(__dirname,'../pdfjs/build/pdf.js')  , options)
 });
+router.get('/pdf.worker',(req,res)=>{
+    console.log('response on get to - pdfjs  :',__dirname)
+    res.sendFile(path.join(__dirname,'../pdfjs/build/pdf.worker.js')  , options)
+});
 
 module.exports = router;
