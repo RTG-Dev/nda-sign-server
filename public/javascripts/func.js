@@ -5,7 +5,7 @@
 // If absolute URL from the remote server is provided, configure the CORS
 // header on that server.
 //var url = './internship-NDA.pdf';
- var url = 'https://rt-dev.xyz:3043/downloads/internship-nda.pdf';
+ var url = 'http://rt-dev.xyz:3044/pdfjs/internship-nda.pdf';
 
 
 // If absolute URL from the remote server is provided, configure the CORS

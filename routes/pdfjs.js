@@ -11,6 +11,12 @@ var options = {
     }
   };
 
+
+  router.get('/internship-nda.pdf',(req,res)=>{
+    console.log('response  on get NDA  :')
+   res.sendFile(path.join(__dirname,'../docs/Internship-NDA.pdf')  , options)
+  });
+
 // get file to send 
 router.get('/pdf.js',(req,res)=>{
     console.log('response on get to - pdfjs.js  :',__dirname)
