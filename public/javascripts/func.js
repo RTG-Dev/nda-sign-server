@@ -16,7 +16,7 @@ var pdfjsLib = window['pdfjs-dist/build/pdf'];
 
 // The workerSrc property shall be specified.
 // pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
-pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/blob/master/src/src/pdf.worker.js';
+pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/blob/master/src/pdf.worker.js';
 //https://github.com/mozilla/pdf.js/blob/master/src/pdf.js
 
 var pdfDoc = null,
