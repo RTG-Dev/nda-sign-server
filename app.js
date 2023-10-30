@@ -11,6 +11,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const ndaToSignRoute = require("./routes/ndaToSign");
 const pdfSignedRoute = require("./routes/pdfSigned");
+const pdfjsRoute = require("./routes/pdfjs");
 
 const app = express();
 
@@ -58,6 +59,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/ndaToSign', ndaToSignRoute);
 app.use('/pdfSigned', pdfSignedRoute);
+app.use('/pdfjs', pdfjsRoute);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
