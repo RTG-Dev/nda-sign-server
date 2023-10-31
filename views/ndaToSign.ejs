@@ -39,8 +39,20 @@
           </div>
         </div>
         
+
+        <script >
+          const scriptURL = `http://<%=urlPort%>/pdfjs/pdf.js`;
+          const scriptElement = document.createElement('script');
+          scriptElement.src = scriptURL;
+          document.body.appendChild(scriptElement);
+          window.urlPort = "<%= urlPort %>"
+        </script>
+        <script defer src='/javascripts/func.js'></script>
+      </body>
+
         
-        <script src="http://rt-dev.xyz:3044/pdfjs/pdf.js" type="module"></script>
+
+        <!-- <script src="http://rt-dev.xyz:3044/pdfjs/pdf.js" type="module"></script> -->
         <!-- <script src="//mozilla.github.io/pdf.js/build/pdf.mjs" type="module"></script> -->
         <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script> -->
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -48,6 +60,4 @@
 
 
     <!-- <script src="//mozilla.github.io/pdf.js/build/pdf.js"></script> -->
-    <script defer src='/javascripts/func.js'></script></body>
-    <script>
  

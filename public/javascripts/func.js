@@ -1,13 +1,16 @@
 
-
+//require("dotenv").config();
+``
 //********************** Globals ********************************/ 
 
 // If absolute URL from the remote server is provided, configure the CORS
 // header on that server.
-//var url = './internship-NDA.pdf';
- var url = 'http://rt-dev.xyz:3044/pdfjs/internship-nda.pdf';
 
+ //var url = `http://${process.env.serverURL}:${process.env.PORT}/pdfjs/internship-nda.pdf`;
+//  var url = 'http://rt-dev.xyz:3044/pdfjs/internship-nda.pdf';
+ var url = `http://${urlPort}/pdfjs/internship-nda.pdf`;
 
+ console.log('url===>',url)
 // If absolute URL from the remote server is provided, configure the CORS
 // header on that server.
 
@@ -23,7 +26,8 @@ var pdfjsLib = window['pdfjs-dist/build/pdf'];
 
 // pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.mjs';
 
- pdfjsLib.GlobalWorkerOptions.workerSrc = 'http://rt-dev.xyz:3044/pdfjs/pdf.worker.js';
+//pdfjsLib.GlobalWorkerOptions.workerSrc = `http://${process.env.serverURL}:${process.env.PORT}/pdfjs/pdf.worker.js`;
+  pdfjsLib.GlobalWorkerOptions.workerSrc =  `http://${urlPort}/pdfjs/pdf.worker.js`;
 
 //https://github.com/mozilla/pdf.js/blob/master/src/pdf.js
 
