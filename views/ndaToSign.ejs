@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="/stylesheets/style.css">
     <title>Document</title>
 </head>
-<body onload="pageLoad()">
-    <div class="main-container" style="display:flex;justify-content:center;width: 100vw;height: 100vh;">
+<body onload="pageLoad()"   style="height: fit-content;">
+    <div class="main-container" style="display:flex;justify-content:center;width: 100vw;height: fit-content;">
         <div style="padding-right: 1vw  ;">
             <canvas id="the-canvas" width=""  height=""></canvas>
           </div>
@@ -27,6 +27,7 @@
             <button id="download" >Download</button>
             <div class="btn3-container">
               <button  id="reload"   onclick="reload()">Reaload</button>
+              <button  id="save">Save Page</button>
               <button  id="done">Done</button>
               <button  id="test">test</button>
             </div>

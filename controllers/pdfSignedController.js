@@ -1,5 +1,9 @@
 
 const fs = require('fs');
+//const PDFDocument = require('pdfkit');
+
+
+
 // const saveAs = require('file-saver');
 // import { Blob } from 'buffer';
 const  { Blob } = require('buffer');
@@ -15,10 +19,57 @@ class PdfSignedController {
   constructor() {
     this.fs = fs
   }
-  
+
   async savePdf(req, res){
+    const dataURL = req.body.mydata;
+    const matches = dataURL.match(/^data:image\/(\w+);base64,(.*)$/);
+    
+    if (!matches) {
+      return res.status(400).send('Invalid data URL');
+    }
+    
+    const ext = matches[1].toLowerCase();
+    const base64Data = matches[2];
+    
+    if (ext !== 'png') {
+      return res.status(400).send('Only PNG images are supported');
+    }
+
+    // Create a new PDFDocument
+    const pdfDoc = await PDFDocument.create();
+
+    // Add a blank page to the document
+    const page = pdfDoc.addPage();
+
+    // Load the image
+    const img = await pdfDoc.embedPng(base64Data);
+
+    // Get the image dimensions and scale them by 50%
+    const scaleFactor = 0.75;
+
+    // Get the image dimensions
+    const { width, height } = img.scale(scaleFactor);
+
+    // Add image to the PDF
+    page.drawImage(img, { x: 0, y: 0, width, height });
+
+    // Save the PDF to a file
+    const pdfBytes = await pdfDoc.save();
+    fs.writeFileSync('outputGPT4.pdf', pdfBytes);
+
+    console.log('File written successfully');
+    res.send('File written successfully');
+  } catch (error) {
+    console.error('Failed to create PDF:', error);
+    res.status(500).send('Failed to create PDF');
+  }
+  
+
+  // old one
+  async savePdf2(req, res){
     // console.log('req.body',req.body)
     // const imgData = canvas.toDataURL("image/jpeg", 1.0);
+    const fs = require("fs");
     
     const b = req.body
     console.log("Hello !");
@@ -29,9 +80,58 @@ class PdfSignedController {
       
       // console.log("The  blob index :",b.mydata.indexOf("base64") + 7);
       //console.log("The file blob !! :",b.mydata.substring(b.mydata.indexOf("base64") + 7));
-      const theBlob = b.mydata.substring(b.mydata.indexOf("base64") + 7)
-      
-      const fs = require("fs");
+      // const theBlob = b.mydata.substring(b.mydata.indexOf("base64") + 7)
+      //const theBlob = b.mydata.substring(b.mydata.indexOf("base64") + 23)
+
+      //*************from GPT4********************** */
+      const theBlob = b.mydata.split(',')[1];
+      if (!theBlob) {
+        console.error("Could not extract base64 string from data URI");
+        process.exit(1);
+      }
+      // Create a new PDFDocument
+      const pdfDoc = await PDFDocument.create();
+      // Add a blank page to the document
+      const page = pdfDoc.addPage();
+      // Load the image
+      const img = await pdfDoc.embedJpg(theBlob);
+      // Get the image dimensions
+      const { width, height } = img.scale(1);
+      // Add image to the PDF
+      page.drawImage(img, { x: 0, y: 0, width, height });
+      // Save the PDF to a file
+      const pdfBytes = await pdfDoc.save();
+      fs.writeFileSync('outputGPT4.pdf', pdfBytes);
+      console.log('File written successfully');
+      res.send('File written successfully');
+
+      // const buffer = Buffer.from(theBlob, "base64");
+      // const doc = new PDFDocument;
+      // // Setup your PDF size, margins, etc. here
+      // const pdfWidth = 595.28; // Example width for A4 size
+      // const pdfHeight = 841.89; // Example height for A4 size
+      // doc.addPage({ size: [pdfWidth, pdfHeight] });
+      // doc.image(buffer, 0, 0, { width: pdfWidth, height: pdfHeight });
+      //       // Prepare for file saving
+      // const filePath = 'outputGPT4.pdf';
+      // const writeStream = fs.createWriteStream(filePath);
+      // // Save PDF to file
+      // doc.pipe(writeStream);
+
+      // Handle file saving completion
+      // writeStream.on('finish', () => {
+      //   console.log('File written successfully');
+      // });
+
+
+      // fs.writeFile("outputGPT4.pdf", buffer, (err) => {
+      //   if (err) {
+      //     console.error("Failed to write file:", err);
+      //   } else {
+      //     console.log("File written successfully");
+      //   }
+      // });
+      /******************************************* */
       const invoice = { fileData: theBlob };
       
       const invoiceFileContents = new Buffer.from(invoice.fileData, "base64");
@@ -90,7 +190,7 @@ class PdfSignedController {
     //  const pdf = new jsPDF();
     //  pdf.addImage(imgData, 'JPEG', 0, 0);
     //  pdf.save("mydownload.pdf");
-     res.send('ok')
+   //  res.send('ok')
   }
 
 

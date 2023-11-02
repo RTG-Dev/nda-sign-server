@@ -55,7 +55,15 @@ body{
     width: 6vw;
     margin-bottom: 0.4vw;
   }
-  #done{
+  #save {
+    padding: 3px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: rgb(206, 211, 209);
+    font-weight: bold;
+    width: 8vw;
+  }
+  #done {
     padding: 3px 16px;
     border-radius: 5px;
     cursor: pointer;

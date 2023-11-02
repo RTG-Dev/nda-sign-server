@@ -19,17 +19,18 @@ var pdfjsLib = window['pdfjs-dist/build/pdf'];
 //var { pdfjsLib } = globalThis;
 
 // The workerSrc property shall be specified.
-// pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
-// pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/blob/master/src/pdf.worker.js';
-// pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/tree/master/src/pdf.worker.js';//
-// pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/blob/master/src/pdf.worker.js'
-
-// pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.mjs';
-
-//pdfjsLib.GlobalWorkerOptions.workerSrc = `http://${process.env.serverURL}:${process.env.PORT}/pdfjs/pdf.worker.js`;
   pdfjsLib.GlobalWorkerOptions.workerSrc =  `http://${urlPort}/pdfjs/pdf.worker.js`;
 
 //https://github.com/mozilla/pdf.js/blob/master/src/pdf.js
+
+var gPageSaved = {
+  page1: false,
+  page2: false,
+  page3: false,
+  page4: false,
+  page5: false
+}
+
 
 var pdfDoc = null,
 pageNum = 1,
@@ -65,16 +66,22 @@ function renderPage(num) {
   pageRendering = true;
   // Using promise to fetch the page
   pdfDoc.getPage(num).then(function(page) {
-     viewport = page.getViewport({scale: scale});
-    canvas.height = viewport.height;
+    // const myviewport = {
+    //   height: 10000,
+    //   width: viewport.width
+    // }
+    viewport = page.getViewport({scale: scale});
+    //viewport.height = 1000
+    
+    canvas.height =  viewport.height;            //<============ control the height
     canvas.width = viewport.width;
 
     // Render PDF page into canvas context
-     renderContext = {
+    renderContext = {
       canvasContext: ctx,
       viewport: viewport
     };
-     renderTask = page.render(renderContext);
+    renderTask = page.render(renderContext);
 
     // Wait for rendering to finish
     renderTask.promise.then(function() {
@@ -139,6 +146,7 @@ function reload(){
 ctx.strokeStyle = "hsl(208, 100%, 43%)";
 ctx.lineJoin = "round";
 ctx.lineWidth = 1;
+//ctx.lineHeight = 1000;
 ctx.filter = "blur(10px)";
 
 
@@ -174,9 +182,39 @@ download.addEventListener("click", function() {
 }, false);
 
 
+
+/********************* save page in localStorage by next button*********************** */
+  const mysave = document.getElementById('next');
+  mysave.addEventListener("click", function(e) {
+    const imgData = canvas.toDataURL("image/jpeg", 1.0);
+    localStorage.setItem(`data${pageNum}`, imgData);
+    gPageSaved[`page${pageNum}`] = true
+    console.log('gPageSaved',gPageSaved)
+  })
+
 /********************** send PDF with post to server  *************************** */
 const mydone = document.getElementById('done');
 mydone.addEventListener("click", function(e) {
+  
+
+  /****************** first save to localstorage the page 5***********************/
+  const imgData = canvas.toDataURL("image/jpeg", 1.0);
+  localStorage.setItem(`data${pageNum}`, imgData);
+  gPageSaved[`page${pageNum}`] = true
+  console.log('gPageSaved',gPageSaved)
+  /****************************************************************************** */
+
+//get the data from localstorag:
+
+var pageData = []
+for(let i =0; i<5; i++){
+  var pagedataNum = localStorage.getItem(`data${i+1}`);
+  pageData.push(pagedataNum)
+}
+
+console.log('pageDataAll',pageData)
+
+
   // only jpeg is supported by jsPDF
   // const imgData = canvas.toDataURL("image/jpeg", 1.0);
   // const pdf = new jsPDF();
@@ -241,25 +279,25 @@ document.getElementById('file-input')
 /************************************************************ */
 
 /*************************** read the canvas and convert it to blob - problem solved on post-  Paylod was too large ******************************************* */
-// const mytest = document.getElementById('test');
-// mytest.addEventListener("click", function(e) {
-//   canvas.toBlob(function (blob) {
-//     var reader = new FileReader();
-//     reader.onload = function () {
-//       //console.log(reader.result);
-//         const data = { mydata: reader.result };
-//         fetch('http://rt-dev.xyz:3044/pdfSigned', {
-//           headers: {
-//             'Accept': 'application/json',
-//             'Content-Type': 'application/json'
-//           },  
-//           method: 'POST', // or 'PUT'
-//           body: JSON.stringify(data),
-//         })
-//     }
-//     reader.readAsBinaryString(blob);
-//   });
-// })
+const mytest = document.getElementById('test');
+mytest.addEventListener("click", function(e) {
+  canvas.toBlob(function (blob) {
+    var reader = new FileReader();
+    reader.onload = function () {
+      //console.log(reader.result);
+        const data = { mydata: reader.result };
+        fetch(`http://${urlPort}/pdfSigned`, {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },  
+          method: 'POST', // or 'PUT'
+          body: JSON.stringify(data),
+        })
+    }
+    reader.readAsBinaryString(blob);
+  });
+})
 /*************************************************************************** */
 
 /************************************* canvas to dataURL ************************** */
@@ -267,7 +305,7 @@ const mytest2 = document.getElementById('test');
 mytest2.addEventListener("click", function(e) {
   var dataURL = canvas.toDataURL();
         const data = { mydata: dataURL };
-        fetch('http://rt-dev.xyz:3044/pdfSigned', {
+        fetch(`http://${urlPort}/pdfSigned`, {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
