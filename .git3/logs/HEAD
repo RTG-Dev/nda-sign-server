@@ -1,0 +1,2 @@
+0000000000000000000000000000000000000000 cc3d77c18f8e45df45f60d01909e393630f9d5b9 RTG-Dev <omer.golan.rtg@gmail.com> 1698590507 +0200	commit (initial): abc
+cc3d77c18f8e45df45f60d01909e393630f9d5b9 89fcc3ed95037b553bb7f22aeedc7e7f94479abb RTG-Dev <omer.golan.rtg@gmail.com> 1699880584 +0200	commit: change cors origin to *
