@@ -22,26 +22,7 @@ app.use(bodyParser.json({limit: '50mb'}));
 app.use(
   cors({
     credentials: true,
-    origin: [
-      `http://localhost:${process.env.PORT}`,
-      `http://localhost:${process.env.PORTSSL}`,
-      `https://rt-crm.com:${process.env.PORT}`,
-      `https://rt-crm.com:${process.env.PORTSSL}`,
-      "http://rt-crm.com:4350",
-      "https://rt-crm.com:4600",
-      "https://rt-test.xyz:4600",
-      "http://localhost:5500",
-      "http://localhost:3005",
-      "http://192.117.146.228:4200",
-      "https://rt-crm.com:4500",
-      "https://rt-crm.com",
-      "http://localhost:4350",
-      "http://rt-test.xyz:4351",
-      "http://rt-test.xyz:3001",
-      "http://127.0.0.1:5500",
-      "https://rtfs0620.xyz",
-      "http://localhost:3044"
-    ],
+    origin: '*'
   })
   );
 
