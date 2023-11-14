@@ -20,7 +20,7 @@ class PdfSignedController {
     this.fs = fs
   }
 
-  async savePdfAngularProject(){
+  async savePdfAngularProject(req, res){
     console.log('pdfSigned==>PdfSignedController, req.file',req.file )
   }
 
