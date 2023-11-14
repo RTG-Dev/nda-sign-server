@@ -16,6 +16,9 @@ const storage = multer.diskStorage({
     }
   })
 const upload = multer({ storage: storage });
-router.post('/', upload.single('file'),(req, res) => pdfSignedController.savePdf(req, res));
+// incoming pdf from vanila javascript project
+router.post('/',(req, res) => pdfSignedController.savePdf(req, res)); 
+// incoming pdf from angular project
+router.post('/angularProject', upload.single('file'),(req, res) => pdfSignedController.savePdfAngularProject(req, res));
 
 module.exports = router;
