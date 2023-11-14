@@ -21,6 +21,7 @@ class PdfSignedController {
   }
 
   async savePdf(req, res){
+    console.log('pdfSigned==>PdfSignedController, req.file',req.file )
     console.log('pdfSigned==>PdfSignedController, req.body',req.body )
     const dataURL = req.body.mydata;
     const matches = dataURL.match(/^data:image\/(\w+);base64,(.*)$/);
