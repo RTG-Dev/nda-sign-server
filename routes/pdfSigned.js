@@ -12,7 +12,7 @@ const storage = multer.diskStorage({
       cb(null, './docs/savedPDF') // Ensure this directory exists
     },
     filename: function(req, file, cb) {
-        cb(null, file.fieldname + '-' + new Date().toLocaleDateString("he-IL").split("/") +'-'+  file.originalname)  // path.extname(file.originalname))
+        cb(null,  new Date().toLocaleDateString("he-IL").split("/") +'-'+  file.originalname)  // path.extname(file.originalname))
     }
   })
   
